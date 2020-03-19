@@ -1,3 +1,4 @@
+  
 # Prerequisites
 *.d
 
@@ -30,3 +31,12 @@
 *.exe
 *.out
 *.app
+
+# .dSYM
+*.dSYM
+
+# .DS_Store
+.DS_Store
+
+# Swap files
+*.swp
