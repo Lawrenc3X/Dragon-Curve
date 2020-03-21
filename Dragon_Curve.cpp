@@ -326,7 +326,7 @@ int main()
 //     printw("%c", s);
 //     refresh();
     
-    dragon curve(90, 15);
+    dragon curve(90, 11);
     for (int i = 0; i < ITERATIONS; i++)
     {
         curve.iterate();
