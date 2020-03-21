@@ -3,8 +3,10 @@
 #include <vector>
 #include <array>
 #include <string.h>
+#include <unistd.h>
 
-#define ITERATIONS 3
+#define ITERATIONS 10
+#define SLEEP 10000
 
 typedef struct dragon
 {
@@ -20,7 +22,7 @@ typedef struct dragon
         curve.push_back('R');
         position = (std::array<int, 2>) {x, y};
         index = 0;
-        direction = 0;
+        direction = 1;
     }
 
     void reset(int x, int y)
@@ -65,10 +67,13 @@ typedef struct dragon
 //    ┌─┤   ┌─┘ ┴
 //    └─┐ ┌─┼─┐
 //      └─┘ └─┘
-
+        if (direction < 0)
+        {
+            direction += 4;
+        }
         direction %= 4;
 
-        char c;
+        chtype c;
         c = inch();
         switch (direction)
         {
@@ -88,27 +93,141 @@ typedef struct dragon
 //                 addch(ACS_TTEE);
 //                 move(position[1] - 1, position[0]);
                 
-                addch(ACS_BTEE);
+                if (c == ACS_LTEE)
+                {
+                    addch(ACS_LLCORNER);
+                } else if (c == ACS_RTEE)
+                {
+                    addch(ACS_LRCORNER);
+                } else if (c == ACS_PLUS)
+                {
+                    // do nothing
+                } else
+                {
+                    addch(ACS_BTEE);
+                }
                 move(position[1] - 1, position[0]);
-                addch(ACS_TTEE);
+
+                chtype c2;
+                c2 = inch();
+                if (    c2 == ACS_ULCORNER || 
+                        c2 == ACS_URCORNER || 
+                        c2 == ACS_LLCORNER || 
+                        c2 == ACS_LRCORNER || 
+                        c2 == ACS_TTEE || 
+                        c2 == ACS_BTEE || 
+                        c2 == ACS_LTEE || 
+                        c2 == ACS_RTEE)
+                {
+                    addch(ACS_PLUS);
+                } else
+                {
+                    addch(ACS_TTEE);
+                }
                 move(position[1] - 1, position[0]);
                 break;
             case 1:
-                addch(ACS_LTEE);
-                move(position[1], position[0] + 2);
-                addch(ACS_RTEE);
+                if (c == ACS_BTEE)
+                {
+                    addch(ACS_LLCORNER);
+                } else if (c == ACS_TTEE)
+                {
+                    addch(ACS_ULCORNER);
+                } else if (c == ACS_PLUS)
+                {
+                    // do nothing
+                } else
+                {
+                    addch(ACS_LTEE);
+                }
+                move(position[1], position[0] + 1);
+
+                addch(ACS_HLINE);
+
+                c2 = inch();
+                if (    c2 == ACS_ULCORNER || 
+                        c2 == ACS_URCORNER || 
+                        c2 == ACS_LLCORNER || 
+                        c2 == ACS_LRCORNER || 
+                        c2 == ACS_TTEE || 
+                        c2 == ACS_BTEE || 
+                        c2 == ACS_LTEE || 
+                        c2 == ACS_RTEE)
+                {
+                    addch(ACS_PLUS);
+                } else
+                {
+                    addch(ACS_RTEE);
+                }
                 move(position[1], position[0] + 2);
                 break;
             case 2:
-                addch(ACS_TTEE);
+                if (c == ACS_LTEE)
+                {
+                    addch(ACS_ULCORNER);
+                } else if (c == ACS_RTEE)
+                {
+                    addch(ACS_URCORNER);
+                } else if (c == ACS_PLUS)
+                {
+                    // do nothing
+                } else
+                {
+                    addch(ACS_TTEE);
+                }
                 move(position[1] + 1, position[0]);
-                addch(ACS_BTEE);
+
+                c2 = inch();
+                if (    c2 == ACS_ULCORNER || 
+                        c2 == ACS_URCORNER || 
+                        c2 == ACS_LLCORNER || 
+                        c2 == ACS_LRCORNER || 
+                        c2 == ACS_TTEE || 
+                        c2 == ACS_BTEE || 
+                        c2 == ACS_LTEE || 
+                        c2 == ACS_RTEE)
+                {
+                    addch(ACS_PLUS);
+                } else
+                {
+                    addch(ACS_BTEE);
+                }
                 move(position[1] + 1, position[0]);
                 break;
             case 3:
-                addch(ACS_RTEE);
+                if (c == ACS_BTEE)
+                {
+                    addch(ACS_LRCORNER);
+                } else if (c == ACS_TTEE)
+                {
+                    addch(ACS_URCORNER);
+                } else if (c == ACS_PLUS)
+                {
+                    // do nothing
+                } else
+                {
+                    addch(ACS_RTEE);
+                }
+                move(position[1], position[0] - 1);
+
+                addch(ACS_HLINE);
                 move(position[1], position[0] - 2);
-                addch(ACS_LTEE);
+
+                c2 = inch();
+                if (    c2 == ACS_ULCORNER || 
+                        c2 == ACS_URCORNER || 
+                        c2 == ACS_LLCORNER || 
+                        c2 == ACS_LRCORNER || 
+                        c2 == ACS_TTEE || 
+                        c2 == ACS_BTEE || 
+                        c2 == ACS_LTEE || 
+                        c2 == ACS_RTEE)
+                {
+                    addch(ACS_PLUS);
+                } else
+                {
+                    addch(ACS_LTEE);
+                }
                 move(position[1], position[0] - 2);
                 break;
         }
@@ -133,6 +252,8 @@ typedef struct dragon
 
         for (int i = index; i < curve.size(); i ++)
         {
+            usleep(SLEEP);
+
             char c = curve[i];
             if (c == 'L')
             {
@@ -205,14 +326,14 @@ int main()
 //     printw("%c", s);
 //     refresh();
     
-    dragon curve(80, 40);
+    dragon curve(90, 15);
     for (int i = 0; i < ITERATIONS; i++)
     {
         curve.iterate();
     }
     curve.draw();
-    curve.printCurve();
-    curve.printDirections();
+//     curve.printCurve();
+//     curve.printDirections();
     refresh();
     
     getch();
