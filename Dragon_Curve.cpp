@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 #define ITERATIONS 10
-#define SLEEP 10000
+#define SLEEP 1000
 
 typedef struct dragon
 {
@@ -36,7 +36,6 @@ typedef struct dragon
     
     void iterate()
     {
-//         index = curve.size();
         std::vector<char> appendix;
         appendix.push_back('R');
 
@@ -58,15 +57,6 @@ typedef struct dragon
 
     void drawSegment() // update position also
     {
-//      ┼ ─ ┌ ┐ └ ┘
-//      ┌─┐
-//      └─┘
-//      │╵╷╶ ╴
-//
-//            ┌─┐
-//    ┌─┤   ┌─┘ ┴
-//    └─┐ ┌─┼─┐
-//      └─┘ └─┘
         if (direction < 0)
         {
             direction += 4;
@@ -77,22 +67,7 @@ typedef struct dragon
         c = inch();
         switch (direction)
         {
-            case 0:
-//                 if (c == ACS_LTEE)
-//                 {
-//                     addch(ACS_LRCORNER);
-//                 } else if (c ==  ACS_RTEE)
-//                 {
-//                     addch(ACS_LLCORNER);
-//                 } else
-//                 {
-//                     addch(ACS_BTEE);
-//                 }
-// 
-//                 move(position[1] - 1, position[0]); // watch out
-//                 addch(ACS_TTEE);
-//                 move(position[1] - 1, position[0]);
-                
+            case 0:                
                 if (c == ACS_LTEE)
                 {
                     addch(ACS_LLCORNER);
@@ -126,6 +101,7 @@ typedef struct dragon
                 }
                 move(position[1] - 1, position[0]);
                 break;
+
             case 1:
                 if (c == ACS_BTEE)
                 {
@@ -161,6 +137,7 @@ typedef struct dragon
                 }
                 move(position[1], position[0] + 2);
                 break;
+
             case 2:
                 if (c == ACS_LTEE)
                 {
@@ -194,6 +171,7 @@ typedef struct dragon
                 }
                 move(position[1] + 1, position[0]);
                 break;
+
             case 3:
                 if (c == ACS_BTEE)
                 {
@@ -267,12 +245,6 @@ typedef struct dragon
         }
     }
 
-//     void draw_iter()
-//     {
-//         draw();
-//         iterate();
-//     }
-
     void printCurve()
     {
         move(0, 0);
@@ -297,34 +269,6 @@ int main()
     initscr();
     noecho();
     keypad(stdscr, true);
-
-//     chtype c = ACS_PLUS;
-// 
-// //      chtype *pchar = &c;
-//     
-//     move(30, 60); 
-//     addch(c);
-//     refresh();
-//     
-//     move(30, 60);
-//     chtype c2;
-//     c2 = inch();
-//     move(30, 61);
-//     addch(c2);
-//     refresh();
-// 
-//     if (c == c2)
-//     {
-//         printw("success");
-//         refresh();
-//     }
-
-//     char s = c & A_CHARTEXT;
-// 
-//     move(30, 61);
-// 
-//     printw("%c", s);
-//     refresh();
     
     dragon curve(90, 11);
     for (int i = 0; i < ITERATIONS; i++)
