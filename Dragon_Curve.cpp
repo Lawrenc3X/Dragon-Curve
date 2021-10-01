@@ -5,7 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define ITERATIONS 10
+#define ITERATIONS 16
 #define SLEEP 1000
 
 typedef struct dragon
@@ -230,7 +230,7 @@ typedef struct dragon
 
         for (int i = index; i < curve.size(); i ++)
         {
-            usleep(SLEEP);
+            // usleep(SLEEP);
 
             char c = curve[i];
             if (c == 'L')
@@ -270,7 +270,7 @@ int main()
     noecho();
     keypad(stdscr, true);
     
-    dragon curve(90, 11);
+    dragon curve(350, 350);
     for (int i = 0; i < ITERATIONS; i++)
     {
         curve.iterate();
